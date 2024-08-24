@@ -1,6 +1,7 @@
 import cv2
 from pypylon import pylon
 import sys
+import numpy as np
 
 
 def select_camera_by_serial(serial_number=None):
