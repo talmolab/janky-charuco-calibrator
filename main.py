@@ -104,6 +104,7 @@ def main(serial_number=None):
     while camera.IsGrabbing():
         grabResult = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
 
+        charuco_img = None
         if grabResult.GrabSucceeded():
             # Access the image data
             image = converter.Convert(grabResult)
@@ -124,6 +125,7 @@ def main(serial_number=None):
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
                 cv2.putText(img, bottom_right_text, (int(bottom_right[0]), int(bottom_right[1]) + 20),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+                charuco_img = img
 
             # Display the image in a window
             # window_title = f'Basler Camera {serial_number} - Board Detected' if board_detected else f'Basler Camera {serial_number}'
@@ -137,9 +139,14 @@ def main(serial_number=None):
                 break
             elif key == ord('s'):
                 # Save the raw image before overlays
-                filename = f"raw_image.{serial_number}.png"
+                filename = f"{serial_number}.raw.png"
                 cv2.imwrite(filename, raw_img)
                 print(f"Saved raw image to {filename}")
+
+                if charuco_img is not None:
+                    filename = f"{serial_number}.charuco.png"
+                    cv2.imwrite(filename, charuco_img)
+                    print(f"Saved charuco image to {filename}")
 
         grabResult.Release()
 
