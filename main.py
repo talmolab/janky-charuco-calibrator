@@ -116,6 +116,13 @@ def main(serial_number=None):
             # Detect the ChArUco board in the image
             img, top_left, bottom_right, board_detected = detect_charuco_board(img)
 
+            # Overlay general illumination stats
+            prc5 = np.percentile(img.flatten(), 5)
+            prc50 = np.percentile(img.flatten(), 50)
+            prc95 = np.percentile(img.flatten(), 95)
+            illumination_text = f"5% / 50% / 95%: {prc5:.1f} / {prc50:.1f} / {prc95:.1f}"
+            cv2.putText(img, illumination_text, (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+
             if board_detected:
                 # Draw text overlay with pixel coordinates of the top-left and bottom-right corners
                 top_left_text = f"Top Left: ({int(top_left[0])}, {int(top_left[1])})"
