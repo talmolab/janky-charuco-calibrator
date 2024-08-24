@@ -1,0 +1,12 @@
+name: janky-charuco-calibrator
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.10
+  - opencv
+  - numpy <2.0.0
+  - pip
+  - pip:
+    - pypylon
